@@ -1,0 +1,19 @@
+Need to do:
+Read in a zobj file (hex)
+Ask user for the display list to export (extract?)
+Copy the display list to a new zobj
+  From start to DF 00 00 00 00 00 00 00
+Get the vector data
+Find all cases of 01 at an offset % f = 0 or % 8 = 0
+  Get all 8 bits
+  Grab all the data from the first offset to the (last offset + last length - 1)
+  Paste into zobj
+  Change the 01 offsets to the end of the zobj file plus each 01s length
+Get the texture data
+Find all cases of FD
+  Use the utility somehow?
+  Or tell user to run the utility and have the offsets/lengths ready
+  Ask user to give texture lengths for each offset
+Paste the texuture data into the zobj
+Change the offsets to be the end of the vector data plus all lengths of textures
+  
