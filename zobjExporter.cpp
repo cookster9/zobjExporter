@@ -155,15 +155,12 @@ int main()
 	newVectorVector.push_back(tempString);
 	newOffset = newVectorStartInt + hexadecimalToDecimal(toUpper(vectorVector.front().substr(2,4)));
 	
-	string replaceString;
-	
 	findAndReplaceAll(displayList,vectorVector.front(),newVectorVector.front());
 
 
 	for(int i = 1; i < (vectorVector.size()); i++)
 	{		
 		tempString = vectorVector.at(i);
-		replaceString=int_to_hex(newOffset).substr(4,4);
 		
 		tempString.replace(12,4,int_to_hex(newOffset).substr(4,4));
 		newVectorVector.push_back(tempString);
@@ -180,19 +177,61 @@ int main()
 			}
 			pos= displayList.find("fd",pos + 2);
 		}
-/*
-	for(int i =0; i < textureVector.size(); i++)
-	{
-		cout << endl << textureVector.at(i) << endl;
-	}
-*/
 
-//when we get to textures can save the fd command with duplicates but have to be careful to replace all instances of the same one
+	string dlAndVector = displayList + vectorData;
+	string textureData;
+
+	int newTextureStartInt = dlAndVector.length()/2;
+	string newTextureStart = int_to_hex(newTextureStartInt);
+	
+
+	tempString = textureVector.front();
+	
+	cout << "Enter texture length for offset: " << tempString << endl;
+	string length;
+	cin >> hex >> length;
+	lengthInt = hexadecimalToDecimal(length);
+	
+	textureData = contents.substr(hexadecimalToDecimal(toUpper(tempString.substr(12,4)))*2,lengthInt*2);
+
+	tempString.replace(12,4,newTextureStart.substr(4,4));
+	newTextureVector.push_back(tempString);
+	
+	newOffset = newTextureStartInt + lengthInt;
+	
+	findAndReplaceAll(displayList,textureVector.front(),newTextureVector.front());
+
+
+
+	
+	for(int i =1; i < textureVector.size(); i++)
+	{
+
+		tempString = textureVector.at(i);
+	
+		cout << "Enter texture length for offset: " << tempString << endl;
+		cin >> hex >> length;
+		lengthInt = hexadecimalToDecimal(length);
+
+		textureData = textureData + contents.substr(hexadecimalToDecimal(toUpper(tempString.substr(12,4)))*2,lengthInt*2);
+
+		tempString.replace(12,4,int_to_hex(newOffset).substr(4,4));
+		newTextureVector.push_back(tempString);
+
+		newOffset = newOffset + lengthInt;
+		findAndReplaceAll(displayList,textureVector.at(i),newTextureVector.at(i));
+
+
+
+	
+	}
+
+
 
 	string output;
-	output = displayList + vectorData;
+	output = displayList + vectorData + textureData;
 
-	// input: std::string hex; (e.g. = "180f00005e2c3415" or longer)
+
 	std::basic_string<uint8_t> bytes;
 
 	for (size_t i = 0; i < output.length(); i += 2) {
